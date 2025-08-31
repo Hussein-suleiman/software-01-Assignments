@@ -1,5 +1,5 @@
 while True:
-    Inches = float(input("key in length in inches (negative to quit): "))
+    Inches = float(input("Key in length in inches (negative to quit): "))
     if Inches < 0:
         print("Program ended.")
         break

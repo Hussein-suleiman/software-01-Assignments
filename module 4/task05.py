@@ -1,8 +1,8 @@
 correct_username = "python"
 correct_password = "rules"
 
-attempts = 0
-while attempts < 5:
+Attempts = 0
+while Attempts < 5:
     username = input("Username: ")
     password = input("Password: ")
 
@@ -10,5 +10,8 @@ while attempts < 5:
         print("Welcome")
         break
     else:
-        print("username or password incorrect, try again.")
-        attempts += 1
+        print("username or password is incorrect, try again.")
+        Attempts += 1
+
+if Attempts == 5:
+    print("Access denied")
