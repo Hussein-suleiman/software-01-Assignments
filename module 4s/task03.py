@@ -1,9 +1,9 @@
 numbers = []
 while True:
-    entry = input("Enter a number (empty to quit): ")
-    if entry == "":
+    Entry = input("Enter a number (empty to quit): ")
+    if Entry == "":
         break
-    numbers.append(float(entry))
+    numbers.append(float(Entry))
 if numbers:
     print(f"Smallest number: {min(numbers)}")
     print(f"Largest number: {max(numbers)}")
