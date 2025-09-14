@@ -1,25 +1,21 @@
-import mysql.connector
+import sqlite3
 
-# Database connection
-connection = mysql.connector.connect(
-    host="localhost",
-    user="root",        # your username
-    password="password",# your password
-    database="airportdb" # replace with your DB name
-)
+def get_airport_by_icao(icao_code):
+    conn = sqlite3.connect("airports.sqlite")
+    cur = conn.cursor()
 
-cursor = connection.cursor()
+    cur.execute("SELECT name, municipality FROM airport WHERE ident = ?", (icao_code,))
+    row = cur.fetchone()
 
-icao = input("Enter ICAO code: ").upper()
+    conn.close()
 
-sql = "SELECT name, municipality FROM airport WHERE ident = %s"
-cursor.execute(sql, (icao,))
-result = cursor.fetchone()
+    if row:
+        print(f"Airport name: {row[0]}")
+        print(f"Location (town): {row[1]}")
+    else:
+        print("No airport found with that ICAO code.")
 
-if result:
-    print(f"Airport name: {result[0]}, Location: {result[1]}")
-else:
-    print("No airport found with that ICAO code.")
 
-cursor.close()
-connection.close()
+if __name__ == "__main__":
+    code = input("Enter ICAO code: ").strip().upper()
+    get_airport_by_icao(code)

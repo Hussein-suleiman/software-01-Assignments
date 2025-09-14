@@ -1,32 +1,29 @@
-import mysql.connector
-from geopy.distance import geodesic
+import sqlite3
 
-# Database connection
-connection = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="password",
-    database="airportdb"
-)
 
-cursor = connection.cursor()
+def list_airports_by_country(area_code):
+    conn = sqlite3.connect("airports.sqlite")
+    cur = conn.cursor()
 
-icao1 = input("Enter first ICAO code: ").upper()
-icao2 = input("Enter second ICAO code: ").upper()
+    cur.execute("""
+                SELECT type, COUNT(*)
+                FROM airport
+                WHERE iso_country = ?
+                GROUP BY type
+                ORDER BY type
+                """, (area_code,))
 
-sql = "SELECT latitude_deg, longitude_deg FROM airport WHERE ident = %s"
+    rows = cur.fetchall()
+    conn.close()
 
-cursor.execute(sql, (icao1,))
-coord1 = cursor.fetchone()
+    if rows:
+        print(f"Airports in {area_code}:")
+        for airport_type, count in rows:
+            print(f"{airport_type}: {count}")
+    else:
+        print("No airports found for that area code.")
 
-cursor.execute(sql, (icao2,))
-coord2 = cursor.fetchone()
 
-if coord1 and coord2:
-    distance_km = geodesic(coord1, coord2).kilometers
-    print(f"Distance between {icao1} and {icao2}: {distance_km:.2f} km")
-else:
-    print("One or both ICAO codes not found in the database.")
-
-cursor.close()
-connection.close()
+if __name__ == "__main__":
+    country = input("Enter country area code (e.g. FI): ").strip().upper()
+    list_airports_by_country(country)
