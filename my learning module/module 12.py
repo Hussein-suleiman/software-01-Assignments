@@ -33,10 +33,10 @@ def get_weather(city):
 
     data = response.json()
 
-    # Weather description
+
     description = data["weather"][0]["description"]
 
-    # Temperature in Kelvin -> Celsius
+
     temp_kelvin = data["main"]["temp"]
     temp_celsius = temp_kelvin - 273.15
 
@@ -44,10 +44,6 @@ def get_weather(city):
     print(f"  Condition: {description}")
     print(f"  Temperature: {temp_celsius:.1f} °C")
 
-
-# --------------------------
-# Main program
-# --------------------------
 
 city = input("Enter the name of a municipality: ")
 get_weather(city)
